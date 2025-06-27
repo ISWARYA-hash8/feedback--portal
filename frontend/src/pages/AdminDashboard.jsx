@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import AdminSidebar from '../components/AdminSidebar';
+import AdminSidebar from '../components/admin/AdminSidebar';
 import { FaUserCircle } from 'react-icons/fa';
-import AllFeedback from '../components/AllFeedback';
+import AllFeedback from '../components/admin/AllFeedback';
 const AdminDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
