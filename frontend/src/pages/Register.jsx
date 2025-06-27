@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { User, Mail, Lock } from 'lucide-react';
-import registerImage from '/assets/login-amico.png'; // your uploaded image
+import { useNavigate } from 'react-router-dom';
+import registerImage from '/assets/login-amico.png';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,17 +12,33 @@ const Register = () => {
     password: ''
   });
 
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setMsg('');
+    setError('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMsg('');
+    setError('');
     try {
       const res = await axios.post('http://localhost:5000/api/auth/register', formData);
-      console.log('User registered:', res.data);
+      setMsg(res.data.msg || 'Registration successful!');
+      setFormData({ name: '', email: '', password: '' });
+
+      // Redirect to login after 1.5 seconds
+      setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
-      console.error('Registration failed:', err.response?.data?.message || err.message);
+      setError(err.response?.data?.msg || 'Registration failed.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,12 +58,16 @@ const Register = () => {
         >
           <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
 
+          {msg && <div className="text-green-600 text-sm text-center mb-2">{msg}</div>}
+          {error && <div className="text-red-600 text-sm text-center mb-2">{error}</div>}
+
           <div className="flex items-center border rounded mb-4 p-2">
             <User className="w-5 h-5 text-gray-500 mr-2" />
             <input
               type="text"
               name="name"
               placeholder="Name"
+              value={formData.name}
               onChange={handleChange}
               className="w-full focus:outline-none"
               required
@@ -59,6 +80,7 @@ const Register = () => {
               type="email"
               name="email"
               placeholder="Email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full focus:outline-none"
               required
@@ -71,6 +93,7 @@ const Register = () => {
               type="password"
               name="password"
               placeholder="Password"
+              value={formData.password}
               onChange={handleChange}
               className="w-full focus:outline-none"
               required
@@ -79,9 +102,10 @@ const Register = () => {
 
           <button
             type="submit"
-            className="w-full bg-purple-600 text-white p-2 rounded hover:bg-purple-700 transition"
+            disabled={loading}
+            className={`w-full bg-purple-600 text-white p-2 rounded transition ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-700'}`}
           >
-            Register
+            {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
       </div>
