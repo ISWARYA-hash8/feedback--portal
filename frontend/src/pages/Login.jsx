@@ -115,6 +115,14 @@ export default function Login() {
           >
             {loading ? "Logging in..." : "Login"}
           </button>
+          {/* Register Link */}
+          <div className="text-center mt-4 text-sm">
+            Don't have an account?{" "}
+            <a href="/register" className="text-purple-600 hover:underline">
+              Register
+            </a>
+          </div>
+
         </form>
       </div>
     </div>
