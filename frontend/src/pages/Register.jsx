@@ -107,6 +107,12 @@ const Register = () => {
           >
             {loading ? 'Registering...' : 'Register'}
           </button>
+          <div className="text-center mt-4 text-sm">
+            Already have an account?{" "}
+            <a href="/" className="text-purple-600 hover:underline">
+              Login
+            </a>
+            </div>
         </form>
       </div>
     </div>
