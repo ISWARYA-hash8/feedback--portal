@@ -1,19 +1,18 @@
 const express = require("express");
-const dotenv = require("dotenv");
-const connectDB = require("./config/db");
-const authRoutes = require("./routes/authRoutes");
+const app = express();
+const mongoose = require("mongoose");
 const cors = require("cors");
 
-dotenv.config();
-connectDB();
-
-const app = express();
+// middleware
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRoutes); // This is the key route prefix
+// routes
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/announcements", require("./routes/announcementRoutes"));
+app.use("/api/resources", require("./routes/resourceRoutes"));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// MongoDB connection
+mongoose.connect("mongodb://localhost:27017/feedbackportal", { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => app.listen(5000, () => console.log("Server started on port 5000")))
+  .catch((err) => console.log(err));
