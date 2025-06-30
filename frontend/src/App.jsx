@@ -19,14 +19,22 @@ import ResolvedFeedback from "./components/admin/ResolvedFeedback";
 import AnnouncementsAdmin from "./components/admin/Announcements";
 import ResourcesAdmin from "./components/admin/Resources";
 import StudentManagement from "./components/admin/StudentManagement";
+import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import ManageUsers from "./components/superadmin/ManageUsers";
+import ViewLogs from "./components/superadmin/ViewLogs";
+import SystemStats from "./components/superadmin/SystemStats";
+
+
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        
 
         {/* Student Dashboard with nested routes */}
         <Route path="/dashboard" element={<Dashboard />}>
@@ -45,6 +53,12 @@ function App() {
           <Route path="resources" element={<ResourcesAdmin />} />
           <Route path="students" element={<StudentManagement />} />
         </Route>
+        <Route path="/superadmin" element={<SuperAdminDashboard />}>
+          <Route path="users" element={<ManageUsers />} />
+          <Route path="logs" element={<ViewLogs />} />
+          <Route path="stats" element={<SystemStats />} />
+        </Route>
+
       </Routes>
     </BrowserRouter>
   );

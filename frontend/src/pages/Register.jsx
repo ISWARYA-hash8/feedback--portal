@@ -36,7 +36,9 @@ const Register = () => {
       // Redirect to login after 1.5 seconds
       setTimeout(() => navigate('/login'), 1500);
     } catch (err) {
-      setError(err.response?.data?.msg || 'Registration failed.');
+      console.error("Registration Error:", err);
+      res.status(500).json({ msg: "Registration failed", error: err.message });
+
     } finally {
       setLoading(false);
     }
